@@ -36,8 +36,7 @@ const getTrainInfo = async (tid) => {
 
 const isTrainFull = async (tid) => {
     const train = await getTrainInfo(tid);
-    if (train.occupied == train.maximum) return 'sold out';
-    else return 'not sold out';
+    return train.occupied == train.maximum
 };
 
 app.get('/fare', async (req, res) => {
@@ -53,7 +52,7 @@ app.get('/fare', async (req, res) => {
 app.get('/train/status', async (req, res) => {
     try {
         const trainInfo = await getTrainInfo(req.query.tid);
-        const trainStatus = await isTrainFull(req.query.tid);
+        const trainStatus = await isTrainFull(req.query.tid) ? 'sold out' : 'not sold out';
         res.send(`Train ${trainInfo.id} is ${trainStatus}`);
     } catch (error) {
         console.error('Error occured : '. error);
